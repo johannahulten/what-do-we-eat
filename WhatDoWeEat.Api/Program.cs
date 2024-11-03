@@ -12,6 +12,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MealPlannerContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add Grocy service configuration
+builder.Services.AddHttpClient<GrocyService>();
+builder.Services.AddScoped<GrocyService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
