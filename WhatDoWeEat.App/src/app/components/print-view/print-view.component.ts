@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-print-view',
+  standalone: true,
+  imports: [],
   templateUrl: './print-view.component.html',
-  styleUrls: ['./print-view.component.scss']
+  styleUrl: './print-view.component.scss'
 })
 export class PrintViewComponent {
-  // Will contain logic for print layout
-} 
+
+}
