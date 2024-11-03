@@ -8,51 +8,80 @@ namespace WhatDoWeEat.Api.Controllers
     [Route("api/meal-plans")]
     public class MealPlansController : ControllerBase
     {
-        private readonly MealPlannerContext _context;
+        private readonly IRepository<MealPlan> _repository;
+        private readonly ILogger<MealPlansController> _logger;
 
-        public MealPlansController(MealPlannerContext context)
+        public MealPlansController(IRepository<MealPlan> repository, ILogger<MealPlansController> logger)
         {
-            _context = context;
+            _repository = repository;
+            _logger = logger;
         }
 
         [HttpPost]
         public async Task<ActionResult<MealPlan>> CreateMealPlan(MealPlan plan)
         {
-            _context.MealPlans.Add(plan);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetMealPlan), new { id = plan.Id }, plan);
+            try
+            {
+                var created = await _repository.AddAsync(plan);
+                return CreatedAtAction(nameof(GetMealPlan), new { id = created.Id }, created);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating meal plan");
+                return StatusCode(500, "An error occurred while creating the meal plan");
+            }
         }
 
         [HttpGet("week/{weekNumber}")]
         public async Task<ActionResult<IEnumerable<MealPlan>>> GetMealPlansForWeek(int weekNumber)
         {
-            var startDate = ISOWeek.ToDateTime(DateTime.Now.Year, weekNumber, DayOfWeek.Monday);
-            var endDate = startDate.AddDays(7);
-
-            return await _context.MealPlans
-                .Where(p => p.Date >= startDate && p.Date < endDate)
-                .OrderBy(p => p.Date)
-                .ThenBy(p => p.MealType)
-                .ToListAsync();
+            try
+            {
+                var repository = (_repository as MealPlanRepository) 
+                    ?? throw new InvalidOperationException("Invalid repository type");
+                
+                var plans = await repository.GetByWeekAsync(weekNumber);
+                return Ok(plans);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving meal plans for week {WeekNumber}", weekNumber);
+                return StatusCode(500, "An error occurred while retrieving meal plans");
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<MealPlan>> GetMealPlan(int id)
         {
-            var plan = await _context.MealPlans.FindAsync(id);
-            if (plan == null) return NotFound();
-            return plan;
+            try
+            {
+                var plan = await _repository.GetByIdAsync(id);
+                if (plan == null) return NotFound();
+                return Ok(plan);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving meal plan {Id}", id);
+                return StatusCode(500, "An error occurred while retrieving the meal plan");
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMealPlan(int id)
         {
-            var plan = await _context.MealPlans.FindAsync(id);
-            if (plan == null) return NotFound();
+            try
+            {
+                var plan = await _repository.GetByIdAsync(id);
+                if (plan == null) return NotFound();
 
-            _context.MealPlans.Remove(plan);
-            await _context.SaveChangesAsync();
-            return NoContent();
+                await _repository.DeleteAsync(plan);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting meal plan {Id}", id);
+                return StatusCode(500, "An error occurred while deleting the meal plan");
+            }
         }
     }
 } 

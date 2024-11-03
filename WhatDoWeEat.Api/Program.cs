@@ -16,6 +16,10 @@ builder.Services.AddDbContext<MealPlannerContext>(options =>
 builder.Services.AddHttpClient<GrocyService>();
 builder.Services.AddScoped<GrocyService>();
 
+// Add after the DbContext registration
+builder.Services.AddScoped<IRepository<CustomMeal>, CustomMealRepository>();
+builder.Services.AddScoped<IRepository<MealPlan>, MealPlanRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
