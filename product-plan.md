@@ -210,3 +210,6 @@ The print view will omit unnecessary UI elements to ensure readability and focus
   * Performance of data fetching and print functionality.
   * Smooth integration with Grocy and reliability of cached data in SQLite.
   * Ability to easily add and retrieve custom entries as suggestions.
+
+-- Create a new SQLite database file
+sqlite3 mealplanner.db
