@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MealPlan } from '../shared/models/meal-plan.model';
-import { environment } from '../../../../src/environments/environment';
+import { AppConfig } from '../config/app-config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MealPlanService {
-  private apiUrl = `${environment.apiUrl}/api/meal-plans`;
+  private appConfig = inject(AppConfig);
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private apiUrl = `${this.appConfig.apiUrl}/api/meal-plans`;
 
   getWeeklyPlan(weekNumber: number): Observable<MealPlan[]> {
     return this.http.get<MealPlan[]>(`${this.apiUrl}/${weekNumber}`);
