@@ -151,8 +151,8 @@ The print view will omit unnecessary UI elements to ensure readability and focus
 
 1. **Unit Testing**:
    * Write unit tests for both Angular components and C# backend API endpoints.
-   * Use Angular’s `Jasmine` and `Karma` frameworks for frontend tests.
-   * Use `.NET`’s xUnit or NUnit for backend testing.
+   * Use Angular’s `Jest` and `Spectator` frameworks for frontend tests.
+   * Use `.NET`’s nUnit for backend testing with fluent assertions.
 
 2. **Integration Testing**:
    * Test data fetching from Grocy and ensure the app handles empty or incomplete data correctly.
