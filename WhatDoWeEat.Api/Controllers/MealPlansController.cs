@@ -1,42 +1,21 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WhatDoWeEat.Api.Controllers
 {
     [ApiController]
-    [Route("api")]
-    public class MealPlannerController : ControllerBase
+    [Route("api/meal-plans")]
+    public class MealPlansController : ControllerBase
     {
         private readonly MealPlannerContext _context;
 
-        public MealPlannerController(MealPlannerContext context)
+        public MealPlansController(MealPlannerContext context)
         {
             _context = context;
         }
 
-        [HttpPost("custom-meals")]
-        public async Task<ActionResult<CustomMeal>> CreateCustomMeal(CustomMeal meal)
-        {
-            _context.CustomMeals.Add(meal);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetCustomMeal), new { id = meal.Id }, meal);
-        }
-
-        [HttpGet("custom-meals")]
-        public async Task<ActionResult<IEnumerable<CustomMeal>>> GetCustomMeals()
-        {
-            return await _context.CustomMeals.ToListAsync();
-        }
-
-        [HttpGet("custom-meals/{id}")]
-        public async Task<ActionResult<CustomMeal>> GetCustomMeal(int id)
-        {
-            var meal = await _context.CustomMeals.FindAsync(id);
-            if (meal == null) return NotFound();
-            return meal;
-        }
-
-        [HttpPost("meal-plans")]
+        [HttpPost]
         public async Task<ActionResult<MealPlan>> CreateMealPlan(MealPlan plan)
         {
             _context.MealPlans.Add(plan);
@@ -44,7 +23,7 @@ namespace WhatDoWeEat.Api.Controllers
             return CreatedAtAction(nameof(GetMealPlan), new { id = plan.Id }, plan);
         }
 
-        [HttpGet("meal-plans/{weekNumber}")]
+        [HttpGet("week/{weekNumber}")]
         public async Task<ActionResult<IEnumerable<MealPlan>>> GetMealPlansForWeek(int weekNumber)
         {
             var startDate = ISOWeek.ToDateTime(DateTime.Now.Year, weekNumber, DayOfWeek.Monday);
@@ -57,7 +36,7 @@ namespace WhatDoWeEat.Api.Controllers
                 .ToListAsync();
         }
 
-        [HttpGet("meal-plans/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<MealPlan>> GetMealPlan(int id)
         {
             var plan = await _context.MealPlans.FindAsync(id);
@@ -65,7 +44,7 @@ namespace WhatDoWeEat.Api.Controllers
             return plan;
         }
 
-        [HttpDelete("meal-plans/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMealPlan(int id)
         {
             var plan = await _context.MealPlans.FindAsync(id);
@@ -76,4 +55,4 @@ namespace WhatDoWeEat.Api.Controllers
             return NoContent();
         }
     }
-}
+} 
