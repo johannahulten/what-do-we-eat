@@ -1,4 +1,7 @@
-@use './app/assets/styles/theme';
+@use '@angular/material' as mat;
+
+// Include the common styles for Angular Material
+@include mat.core();
 
 /* Reset and base styles */
 html, body {
