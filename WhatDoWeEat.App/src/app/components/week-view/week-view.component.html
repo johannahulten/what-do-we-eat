@@ -1,1 +1,47 @@
-<p>week-view works!</p>
+<div class="week-view">
+  <div class="week-header">
+    <button mat-icon-button (click)="navigateWeek('prev')" aria-label="Previous week">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <h2>Week {{ getISOWeek(currentWeek) }}</h2>
+    <button mat-icon-button (click)="navigateWeek('next')" aria-label="Next week">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <div class="days-container">
+    @for (day of weekDays; track day; let i = $index) {
+      <mat-card class="day-card">
+        <mat-card-header>
+          <mat-card-title>{{ day }}</mat-card-title>
+          <mat-card-subtitle>{{ getDayDate(i) | date:'mediumDate' }}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          @for (mealType of (isWeekend(day) ? mealTypes.weekend : mealTypes.weekday); track mealType) {
+            <a class="meal-slot" [routerLink]="['/entry']" [queryParams]="{date: getDayDate(i), type: mealType}">
+              <h4>{{ mealType }}</h4>
+              @if (getMealsForDay(getDayDate(i), mealType); as meal) {
+                <div class="meal-items">
+                  @for (item of meal.mealItems; track item) {
+                    <div class="meal-item">
+                      {{ item.type === 'custom' ? 'Custom: ' : '' }}{{ item.id }}
+                      @if (item.quantity) {
+                        <span class="quantity">({{ item.quantity }})</span>
+                      }
+                    </div>
+                  }
+                </div>
+              } @else {
+                <div class="empty-meal">
+                  <mat-icon>add</mat-icon>
+                  <span>Add meal</span>
+                </div>
+              }
+            </a>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</div>

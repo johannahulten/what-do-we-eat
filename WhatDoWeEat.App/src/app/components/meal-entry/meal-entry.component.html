@@ -1,1 +1,42 @@
-<p>meal-entry works!</p>
+<mat-card class="meal-entry-card">
+  <mat-card-header>
+    <mat-card-title>
+      {{ date | date:'fullDate' }} - {{ mealType }}
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="mealForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Meal Type</mat-label>
+        <mat-select formControlName="mealType">
+          @for (type of mealTypes; track type) {
+            <mat-option [value]="type">{{ type }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Notes</mat-label>
+        <textarea matInput formControlName="notes" rows="3"></textarea>
+      </mat-form-field>
+
+      <div class="meal-items-section">
+        <h3>Meal Items</h3>
+        <button type="button" mat-raised-button color="primary" (click)="addMealItem()">
+          <mat-icon>add</mat-icon>
+          Add Item
+        </button>
+
+        <!-- TODO: Add meal items form array here -->
+      </div>
+
+      <div class="form-actions">
+        <button type="button" mat-button [routerLink]="['/week']">Cancel</button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="!mealForm.valid">
+          Save
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,1 +1,42 @@
-<p>print-view works!</p>
+<div class="print-view">
+  <div class="screen-only">
+    <button mat-raised-button color="primary" (click)="printWeek()">
+      <mat-icon>print</mat-icon>
+      Print Week
+    </button>
+  </div>
+
+  <div class="print-content">
+    <h1>Weekly Meal Plan - Week {{ getWeekNumber() }}</h1>
+
+    @for (day of weekDays; track day) {
+      <div class="day-section">
+        <h2>{{ day }}</h2>
+        @for (mealType of (isWeekend(day) ? mealTypes.weekend : mealTypes.weekday); track mealType) {
+          <div class="meal-section">
+            <h3>{{ mealType }}</h3>
+            @if (getMealsForDay(currentWeek, mealType); as meal) {
+              <div class="meal-items">
+                @for (item of meal.mealItems; track item) {
+                  <div class="meal-item">
+                    • {{ item.type === 'custom' ? 'Custom: ' : '' }}{{ item.id }}
+                    @if (item.quantity) {
+                      <span class="quantity">({{ item.quantity }})</span>
+                    }
+                  </div>
+                }
+                @if (meal.notes) {
+                  <div class="meal-notes">
+                    Notes: {{ meal.notes }}
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="empty-meal">No meal planned</div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

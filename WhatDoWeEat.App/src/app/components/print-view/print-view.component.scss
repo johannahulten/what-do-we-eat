@@ -1,0 +1,98 @@
+.print-view {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.screen-only {
+  margin-bottom: 20px;
+  text-align: right;
+
+  @media print {
+    display: none;
+  }
+}
+
+.print-content {
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+}
+
+.day-section {
+  margin-bottom: 30px;
+  page-break-inside: avoid;
+
+  h2 {
+    color: #444;
+    border-bottom: 2px solid #666;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+}
+
+.meal-section {
+  margin-bottom: 20px;
+
+  h3 {
+    color: #666;
+    font-size: 16px;
+    margin: 0 0 8px 0;
+    text-transform: capitalize;
+  }
+}
+
+.meal-items {
+  padding-left: 20px;
+}
+
+.meal-item {
+  margin: 4px 0;
+  font-size: 14px;
+
+  .quantity {
+    color: #666;
+    margin-left: 4px;
+  }
+}
+
+.meal-notes {
+  margin-top: 8px;
+  font-style: italic;
+  color: #666;
+  font-size: 14px;
+}
+
+.empty-meal {
+  color: #999;
+  font-style: italic;
+  font-size: 14px;
+}
+
+@media print {
+  .print-view {
+    padding: 0;
+  }
+
+  body {
+    font-size: 12pt;
+  }
+
+  h1 {
+    font-size: 18pt;
+  }
+
+  h2 {
+    font-size: 16pt;
+  }
+
+  h3 {
+    font-size: 14pt;
+  }
+
+  .day-section {
+    margin-bottom: 20px;
+  }
+}

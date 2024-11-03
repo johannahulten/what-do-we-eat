@@ -1,0 +1,82 @@
+.week-view {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.week-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+    font-weight: 500;
+  }
+}
+
+.days-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.day-card {
+  mat-card-header {
+    margin-bottom: 16px;
+  }
+}
+
+.meal-slot {
+  display: block;
+  padding: 12px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.03);
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.06);
+    text-decoration: none;
+  }
+
+  h4 {
+    margin: 0 0 8px 0;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+}
+
+.meal-items {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.meal-item {
+  padding: 4px 0;
+
+  .quantity {
+    color: rgba(0, 0, 0, 0.6);
+    margin-left: 4px;
+  }
+}
+
+.empty-meal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+
+  mat-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+  }
+}
